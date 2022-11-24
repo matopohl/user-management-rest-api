@@ -1,0 +1,75 @@
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+spring:
+  profiles:
+    active: local
+  messages:
+    basename: messages/validation, messages/exception, messages/response
+    encoding: UTF-8
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+      org:
+        hibernate:
+          envers:
+            default_schema: audit
+            audit_table_suffix: _audit
+            revision_field_name: fk_revinfo_id
+            revision_type_field_name: revinfo_type
+            store_data_at_delete: true
+  jackson:
+    serialization:
+      indent-output: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: -1
+      max-request-size: -1
+
+#---
+
+my:
+  locale:
+    default: en_EN
+    accept: en_EN, cs_CZ, en, cs
+  log:
+    token-header-attribute: Request-Token
+    token-slf4j-attribute: requestToken
+  dir:
+    home: src/main/resources/
+    static: ${my.dir.home}static/
+    user: ${my.dir.static}user/
+  RSA:
+    public: /RSA/public.key
+    private: /RSA/private.key
+  jwt:
+    access-token-expiration: 5
+    refresh-token-expiration: 1440
+  user:
+    verify-token-expiration: 1440
+    reset-password-token-expiration: 1440
+  file:
+    image:
+      format: image/png, image/jpg, image/jpeg
+      size: 10MB
+  cache:
+    profile-images:
+      dir: ${my.dir.static}cache profile images/
+      treshold: 5
+      download: 10

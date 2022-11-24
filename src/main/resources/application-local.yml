@@ -1,0 +1,49 @@
+logging:
+  level:
+    root: info
+    org:
+      hibernate:
+        SQL: info
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+spring:
+  datasource:
+    url: jdbc:h2:./h2/user_management;MODE=PostgreSQL;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=10990;INIT=CREATE SCHEMA IF NOT EXISTS AUDIT
+    username: user_management_tech
+    password: user_management_tech
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: com.matopohl.user_management.configuration.db.PostgreSqlDialect
+  h2:
+    console:
+      enabled: true
+      path: /h2
+      settings:
+        web-allow-others: false
+  flyway:
+    enabled: false
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

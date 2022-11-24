@@ -1,0 +1,45 @@
+logging:
+  level:
+    root: info
+    org:
+      hibernate:
+        SQL: info
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user_management?reWriteBatchedInserts=true
+    username: user_management_tech
+    password: user_management_tech
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/user_management
+    user: postgres
+    password: postgres
+    locations: classpath:db/migration, classpath:db/prod/migration
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+    password: redis
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

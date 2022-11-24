@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+
+    <Properties>
+        <Property name="appName">app</Property>
+        <Property name="basePath">log/${appName}</Property>
+        <Property name="defaultFileName">${appName}</Property>
+        <Property name="fileNameError">${defaultFileName}${ctx:fileName:-}-ERROR</Property>
+        <Property name="fileNameWarn">${defaultFileName}${ctx:fileName:-}-WARN</Property>
+        <Property name="fileNameInfo">${defaultFileName}${ctx:fileName:-}-INFO</Property>
+        <Property name="fileNameDebug">${defaultFileName}${ctx:fileName:-}-DEBUG</Property>
+        <Property name="fileNameTrace">${defaultFileName}${ctx:fileName:-}-TRACE</Property>
+        <Property name="log">log</Property>
+        <Property name="zip">log.gz</Property>
+        <Property name="zipPattern">%d{yyyy-MM-dd}-%i</Property>
+        <Property name="zipInterval">1</Property>
+        <Property name="maxSize">100MB</Property>
+        <Property name="maxAge">30d</Property>
+        <Property name="highlight">{ERROR=bright red, WARN=bright yellow, INFO=bright green, DEBUG=blue, TRACE=white}</Property>
+        <Property name="pattern">%highlight{[%-5level] [%tn %tid %tp] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%c{99}(}${highlight}%F:%L%highlight{)] : %msg%n}${highlight}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="logConsole" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="${pattern}" />
+        </Console>
+
+        <RollingFile name="logError"
+                     fileName="${basePath}/${fileNameError}.${log}"
+                     filePattern="${basePath}/${fileNameError}-${zipPattern}.${zip}"
+                     ignoreExceptions="false">
+            <LevelRangeFilter minLevel="error" maxLevel="error" />
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}" />
+                <TimeBasedTriggeringPolicy interval="${zipInterval}" modulate="true" />
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="${basePath}" maxDepth="1">
+                    <IfFileName glob="${fileNameError}*.${zip}" />
+                    <IfLastModified age="${maxAge}" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="logWarn"
+                     fileName="${basePath}/${fileNameWarn}.${log}"
+                     filePattern="${basePath}/${fileNameWarn}-${zipPattern}.${zip}"
+                     ignoreExceptions="false">
+            <LevelRangeFilter minLevel="error" maxLevel="warn" />
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}" />
+                <TimeBasedTriggeringPolicy interval="${zipInterval}" modulate="true" />
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="${basePath}" maxDepth="1">
+                    <IfFileName glob="${fileNameWarn}*.${zip}" />
+                    <IfLastModified age="${maxAge}" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="logInfo"
+                     fileName="${basePath}/${fileNameInfo}.${log}"
+                     filePattern="${basePath}/${fileNameInfo}-${zipPattern}.${zip}"
+                     ignoreExceptions="false">
+            <LevelRangeFilter minLevel="error" maxLevel="info" />
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}" />
+                <TimeBasedTriggeringPolicy interval="${zipInterval}" modulate="true" />
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="${basePath}" maxDepth="1">
+                    <IfFileName glob="${fileNameInfo}*.${zip}" />
+                    <IfLastModified age="${maxAge}" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="logDebug"
+                     fileName="${basePath}/${fileNameDebug}.${log}"
+                     filePattern="${basePath}/${fileNameDebug}-${zipPattern}.${zip}"
+                     ignoreExceptions="false">
+            <LevelRangeFilter minLevel="error" maxLevel="debug" />
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}" />
+                <TimeBasedTriggeringPolicy interval="${zipInterval}" modulate="true" />
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="${basePath}" maxDepth="1">
+                    <IfFileName glob="${fileNameDebug}*.${zip}" />
+                    <IfLastModified age="${maxAge}" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="logTrace"
+                     fileName="${basePath}/${fileNameTrace}.${log}"
+                     filePattern="${basePath}/${fileNameTrace}--${zipPattern}.${zip}"
+                     ignoreExceptions="false">
+            <LevelRangeFilter minLevel="error" maxLevel="trace" />
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxSize}" />
+                <TimeBasedTriggeringPolicy interval="${zipInterval}" modulate="true" />
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="${basePath}" maxDepth="1">
+                    <IfFileName glob="${fileNameTrace}*.${zip}" />
+                    <IfLastModified age="${maxAge}" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="all" additivity="true" includeLocation="true">
+            <AppenderRef ref="logConsole" level="trace"/>
+            <AppenderRef ref="logError" level="off"/>
+            <AppenderRef ref="logWarn" level="off"/>
+            <AppenderRef ref="logInfo" level="off"/>
+            <AppenderRef ref="logDebug" level="off"/>
+            <AppenderRef ref="logTrace" level="off"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
